@@ -6,53 +6,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Weather Dashboard</title>
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <!-- Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
         integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
         crossorigin="anonymous"></script>
+    <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="assets/style.css">
-
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/55233fae23.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div class="jumbotron text-center">
+    <div class="jumbotron sticky-top text-center">
         <h1 class="display-4 font-weight-bold">Weather Dashboard</h1>
     </div>
 
     <div class="container-fluid w-100">
         <div class="row">
             <!-- Left Search Column -->
-            <div class="col-4 bg-light">
+            <div class="col-3 bg-light">
                 <h4 id="search-title">Search for a City:</h4>
                 <!-- City Search -->
                 <form class="form-inline">
-                    <input type="text" class="form-control w-75">
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                    <input type="text" class="form-control w-75" id="search-bar">
+                    <button type="submit" class="btn btn-primary" id="search-button"><i class="fas fa-search"></i></button>
                 </form>
                 <!-- Previous Search History -->
-                <form class="form">
-                    <!-- <button type="submit" class="btn bg-white border d-block w-100 text-left">Atlanta</i></button> -->
+                <form class="form d-none">
+                    <button type="submit" class="btn bg-white border d-block w-100 text-left">Atlanta</i></button>
+                    <button type="submit" class="btn bg-white border btn-block w-100 text-left">Atlanta</i></button>
                 </form>
             </div>
 
             <!-- Right Forecast Column -->
-            <div class="col-8">
+            <div class="col-9 d-none" id="current-weather-column">
                 <!-- Current Weather Row -->
                 <div class="row" id="current-weather">
                     <div class="card w-100">
                         <div class="card-body">
-                            <h3 class="card-title">City</h3>
-                            <h5 class="text-muted">Temperature:</h5>
-                            <h5 class="text-muted">Humidity:</h5>
-                            <h5 class="text-muted">Wind Speed:</h5>
-                            <h5 class="text-muted">UV Index:</h5>
+                            <h3 class="card-title" id="city"></h3><br>
+                            <h5 class="text-muted" id="temp"></h5><br>
+                            <h5 class="text-muted" id="humidity"></h5><br>
+                            <h5 class="text-muted" id="wind-speed"></h5><br>
+                            <h5 class="text-muted"><span id="uv-index">UV Index: </span></h5>
                         </div>
                     </div>
                 </div>
@@ -64,53 +68,14 @@
                 <!-- 5-Day Forecast Cards -->
                 <div class="row d-flex justify-content-center" id="forecast-cards">
                     <div class="card-deck w-100">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title date">Date</h5>
-                                <h6 class="weather-icon"></h6>
-                                <h6 class="text-muted">Temp:</h6>
-                                <h6 class="text-muted">Humidity:</h6>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title date">Date</h5>
-                                <h6 class="weather-icon"><i class="fas fa-cloud-rain"></i></h6>
-                                <h6 class="text-muted">Temp:</h6>
-                                <h6 class="text-muted">Humidity:</h6>
-                            </div>
-                        </div>
-                        <div class="card forecast-card">
-                            <div class="card-body">
-                                <h5 class="card-title date">Date</h5>
-                                <h6 class="weather-icon"></h6>
-                                <h6 class="text-muted">Temp:</h6>
-                                <h6 class="text-muted">Humidity:</h6>
-                            </div>
-                        </div>
-                        <div class="card forecast-card">
-                            <div class="card-body">
-                                <h5 class="card-title date">Date</h5>
-                                <h6 class="weather-icon"></h6>
-                                <h6 class="text-muted">Temp:</h6>
-                                <h6 class="text-muted">Humidity:</h6>
-                            </div>
-                        </div>
-                        <div class="card forecast-card">
-                            <div class="card-body">
-                                <h5 class="card-title date">Date</h5>
-                                <h6 class="weather-icon"></h6>
-                                <h6 class="text-muted">Temp:</h6>
-                                <h6 class="text-muted">Humidity:</h6>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script href="assets/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
+    <script src="assets/script.js"></script>
 </body>
 
 </html>

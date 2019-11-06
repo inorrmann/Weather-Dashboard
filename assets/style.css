@@ -1,7 +1,8 @@
 .jumbotron {
     background-size: cover;
-    background-image: url("./images/rain.jpg");
+    /* background-image: url("./images/rain.jpg"); */
     margin-bottom: 0;
+    border-radius: 0;
 }
 
 .container {
@@ -9,7 +10,7 @@
 }
 
 /* Left Search Column */
-.col-4 {
+.col-3 {
     padding: 20px;
 }
 
@@ -33,6 +34,18 @@
 
 #forecast-cards {
     padding: 0 5px;
+}
+
+#uv-button {
+    padding: 5px 10px;
+}
+
+.btn-orange {
+    background-color: rgb(255, 153, 0);
+}
+
+.card-deck {
+    padding-bottom: 30px;
 }
 
 
