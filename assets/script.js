@@ -4,22 +4,13 @@ var long;
 // find user's current location
 function getLocation() {
   window.navigator.geolocation.getCurrentPosition(function (position) {
+    document.querySelector("#loading-column").classList.remove("d-none");
     long = position.coords.longitude;
     lat = position.coords.latitude;
     console.log("Latitude: " + lat + " Longitude " + long)
-
+    // currentWeather ajax call
     currentWeatherUrl = `${baseUrl}weather?lat=${lat}&lon=${long}&units=imperial&appid=${apiKey}`;
     ajaxCall(currentWeatherUrl);
-    // UVindexUrl = `${baseUrl}uvi?appid=${apiKey}&lat=${lat}&lon=${long}`;
-    // ajaxCall(UVindexUrl);
-    // forecastUrl = `${baseUrl}forecast?lat=${lat}&lon=${long}&units=imperial&appid=${apiKey}`;
-    // ajaxCall(forecastUrl);
-
-
-    // old individual functions
-    // currentWeather();
-    // UVindex ();
-    // forecast();
   })
 }
 getLocation();
@@ -29,12 +20,11 @@ var apiKey = "ba7557fe357f3ca6d72951aa5899a445";
 var currentWeatherUrl;
 var UVindexUrl;
 var forecastUrl;
-
+// data stores the ajaxCall response
 var data;
 
 // populate with current location
 function ajaxCall(x) {
-  console.log("working");
   $.ajax({
     url: x,
     method: "GET"
@@ -57,17 +47,12 @@ function ajaxCall(x) {
 }
 
 
-
 // Current Weather for Current Location
 function currentWeather() {
-  // var currentWeatherUrl = `${baseUrl}weather?lat=${lat}&lon=${long}&units=imperial&appid=${apiKey}`;
-
-  // $.ajax({
-  //   url: currentWeatherUrl,
-  //   method: "GET"
-  // }).then(function (response) {
-  //   console.log(response);
-  // response.coord
+  console.log(data.coord.lat);
+  console.log(data.coord.lon);
+  // lat = 
+  // long = data
   document.querySelector("#city").textContent = `${data.name} (${moment().format("MMM Do, YYYY")})`;
   document.querySelector("#temp").textContent = `Temperature: ${data.main.temp.toFixed(1)} ºF`;
   document.querySelector("#humidity").textContent = `Humidity: ${data.main.humidity}%`;
@@ -75,25 +60,17 @@ function currentWeather() {
   // jumbotron image change
   var currentIcon = data.weather[0].icon;
   document.querySelector(".jumbotron").setAttribute("style", `background-image: url("./assets/images/${weatherImg[currentIcon]}.jpg")`);
-  // });
+  // call UVindex ajax
   UVindexUrl = `${baseUrl}uvi?appid=${apiKey}&lat=${lat}&lon=${long}`;
   ajaxCall(UVindexUrl);
-  // forecastUrl = `${baseUrl}forecast?lat=${lat}&lon=${long}&units=imperial&appid=${apiKey}`;
-  // ajaxCall(forecastUrl);
+
 }
 
 
 // UV-Index for Current Location
 function UVindex() {
-  // var UVindexUrl = `${baseUrl}uvi?appid=${apiKey}&lat=${lat}&lon=${long}`;
-
-  // $.ajax({
-  //   url: UVindexUrl,
-  //   methoc: "GET"
-  // }).then(function (response) {
-  //   console.log(response);
-  //   // response.lat
   var button = document.createElement("button");
+  // set colors of button depending on UV-index
   if (data.value < 3) {
     button.className = "btn btn-success btn-lg";
   }
@@ -109,24 +86,15 @@ function UVindex() {
   button.setAttribute("id", "uv-button");
   button.textContent = data.value;
   document.querySelector("#uv-index").appendChild(button);
-  // });
+  // call forecast ajax
   forecastUrl = `${baseUrl}forecast?lat=${lat}&lon=${long}&units=imperial&appid=${apiKey}`;
   ajaxCall(forecastUrl);
-
 }
 
 
 // Forecast for Current Location
 function forecast() {
-  // var forecastUrl = `${baseUrl}forecast?lat=${lat}&lon=${long}&units=imperial&appid=${apiKey}`;
-
-  // $.ajax({
-  //   url: forecastUrl,
-  //   method: "GET"
-  // }).then(function (response) {
-  //   console.log(response);
-  //   // response.cod
-
+  // loop to dynamically generate each forecast card
   for (var i = 4; i < data.list.length; i += 8) {
     var div1 = document.createElement("div");
     div1.className = "card bg-light";
@@ -151,9 +119,10 @@ function forecast() {
     text3.textContent = `Humidity: ${data.list[i].main.humidity}%`;
     div2.appendChild(text3);
   }
+  // hide loading spinner
   document.querySelector("#loading-column").setAttribute("style", "display: none");
+  // show weather information
   document.querySelector("#current-weather-column").classList.remove("d-none");
-  // });
 }
 
 // icons for openweathermap
@@ -206,10 +175,14 @@ var citySearch = document.querySelector("#search-bar");
 
 searchBtn.addEventListener("click", function () {
   event.preventDefault();
-
-  console.log(citySearch.value);
+  city = citySearch.value;
+  console.log(city);
+  currentCityWeatherUrl = `${baseUrl}weather?q=${city}&units=imperial&appid=${apiKey}`;
+  ajaxCall(currentCityWeatherUrl);
 
 })
+
+// clear children previously created before creating new ones!
 
 
 // Previous Search Cities Buttons
