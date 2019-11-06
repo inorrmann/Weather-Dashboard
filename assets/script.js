@@ -151,6 +151,7 @@ function forecast() {
     text3.textContent = `Humidity: ${data.list[i].main.humidity}%`;
     div2.appendChild(text3);
   }
+  document.querySelector("#loading-column").setAttribute("style", "display: none");
   document.querySelector("#current-weather-column").classList.remove("d-none");
   // });
 }

@@ -18,6 +18,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
         integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
         crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="assets/style.css">
     <!-- Font Awesome -->
@@ -37,7 +41,8 @@
                 <!-- City Search -->
                 <form class="form-inline">
                     <input type="text" class="form-control w-75" id="search-bar">
-                    <button type="submit" class="btn btn-primary" id="search-button"><i class="fas fa-search"></i></button>
+                    <button type="submit" class="btn btn-primary" id="search-button"><i
+                            class="fas fa-search"></i></button>
                 </form>
                 <!-- Previous Search History -->
                 <form class="form d-none">
@@ -47,6 +52,13 @@
             </div>
 
             <!-- Right Forecast Column -->
+            <div class="col-9" id="loading-column">
+                <!-- Loading Spinner -->
+                <div class="d-flex align-items-center m-4 p-4">
+                    <h1> Loading </h1>
+                    <div class="spinner-border m-4" role="status"><span class="sr-only">Loading...</span></div>
+                </div>
+            </div>
             <div class="col-9 d-none" id="current-weather-column">
                 <!-- Current Weather Row -->
                 <div class="row" id="current-weather">
