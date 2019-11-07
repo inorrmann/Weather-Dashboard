@@ -69,9 +69,7 @@ function currentWeather() {
 
 // *** UV-INDEX ***
 function UVindex() {
-  // clear previous uv-index button
-  clearUV();
-  var button = document.createElement("button");
+  var button = document.querySelector("#uv-button");
   // set colors of button depending on UV-index
   if (data.value < 3) {
     button.className = "btn btn-success btn-lg";
@@ -82,12 +80,13 @@ function UVindex() {
   else if (data.value >= 6 && data.value < 8) {
     button.className = "btn btn-orange btn-lg";
   }
-  else if (data.value >= 8) {
+  else if (data.value >= 8 && data.value < 11) {
     button.className = "btn btn-danger btn-lg";
   }
-  button.setAttribute("id", "uv-button");
+  else if (data.value >= 11) {
+    button.className = "btn btn-purple btn-lg";
+  }
   button.textContent = data.value;
-  document.querySelector("#uv-index").appendChild(button);
   // call forecast ajax
   forecastUrl = `${baseUrl}forecast?lat=${lat}&lon=${long}&units=imperial&appid=${apiKey}`;
   ajaxCall(forecastUrl);
@@ -208,13 +207,7 @@ searchBtn.addEventListener("click", function () {
 })
 
 
-// clear children of UV-index
-function clearUV() {
-  var uv = document.querySelector("#uv-index")
-  while (uv.hasChildNodes()) {
-    uv.removeChild(uv.firstChild);
-  }
-}
+
 // clear children of card deck
 function clearChildren() {
   var deck = document.querySelector(".card-deck");
@@ -272,6 +265,18 @@ function saveCities() {
 }
 
 
-// loading spinner for search button
+// *** SEARCH WEATHER BY CLICKING ON PREVIOUS CITY ***
+var previousSearch = document.querySelector("#previous-search");
+// on-click direct to ajax call
+previousSearch.addEventListener("click", function () {
+  event.preventDefault();
+  // convert search value to all caps
+  city = event.target.textContent
+  console.log(city);
+  currentCityWeatherUrl = `${baseUrl}weather?q=${city}&units=imperial&appid=${apiKey}`;
+  ajaxCall(currentCityWeatherUrl);
+})
 
-// on-click event for the cities from the list
+
+// localStorage.clear();
+// purple for above 11 uv-index

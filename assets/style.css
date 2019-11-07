@@ -6,7 +6,8 @@
 }
 
 #main-title {
-    text-shadow: 1px 1px 5px lightgrey;
+    color: rgb(145, 21, 21);
+    text-shadow: 1px 1px 6px rgb(17, 17, 17);
 }
 
 .container {
@@ -31,6 +32,18 @@
     padding: 20px;
 }
 
+#uv-button {
+    padding: 5px 10px;
+}
+
+.btn-orange {
+    background-color: rgb(255, 153, 0);
+}
+
+.btn-purple {
+    background-color: rgb(226, 71, 226);
+}
+
 #forecast-title {
     margin-bottom: 20px;
     margin-left: 20px;
@@ -40,18 +53,6 @@
     padding: 0 5px;
 }
 
-#uv-button {
-    padding: 5px 10px;
-}
-
-.btn-orange {
-    background-color: rgb(255, 153, 0);
-}
-
 .card-deck {
     padding-bottom: 30px;
 }
-
-
-
-/* .d-none to hide elements in Bootstrap */

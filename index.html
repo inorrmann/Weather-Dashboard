@@ -30,7 +30,7 @@
 
 <body>
     <div class="jumbotron sticky-top text-center">
-        <h1 class="display-4 font-weight-bold" id="main-title">Weather Dashboard</h1>
+        <h1 class="display-3 font-weight-bold" id="main-title">Weather Dashboard</h1>
     </div>
 
     <div class="container-fluid w-100">
@@ -45,9 +45,8 @@
                             class="fas fa-search"></i></button>
                 </form>
                 <!-- Previous Search History -->
-                <form class="form" id="previous-search">
-                    <!-- <button type="submit" class="btn bg-white border d-block w-100 text-left">Atlanta</i></button>
-                    <button type="submit" class="btn bg-white border btn-block w-100 text-left">Atlanta</i></button> -->
+                <form class="form">
+                    <div class="btn-group-vertical btn-group-lg w-100" id="previous-search"></div>
                 </form>
             </div>
 
@@ -68,7 +67,7 @@
                             <h5 class="text-muted" id="temp"></h5><br>
                             <h5 class="text-muted" id="humidity"></h5><br>
                             <h5 class="text-muted" id="wind-speed"></h5><br>
-                            <h5 class="text-muted"><span id="uv-index">UV Index: </span></h5>
+                            <h5 class="text-muted"><span id="uv-index">UV Index: <button id="uv-button"></button></span></h5>
                         </div>
                     </div>
                 </div>
