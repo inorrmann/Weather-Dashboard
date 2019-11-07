@@ -1,7 +1,7 @@
 var lat;
 var long;
 
-// find user's current location
+// *** USER'S CURRENT LOCATION ON LANDING PAGE ***
 function getLocation() {
   window.navigator.geolocation.getCurrentPosition(function (position) {
     document.querySelector("#loading-column").classList.remove("d-none");
@@ -15,14 +15,15 @@ function getLocation() {
 }
 getLocation();
 
+
+// *** AJAX CALL VARIABLES & FUNCTION ***
 var baseUrl = "https://cors-anywhere.herokuapp.com/api.openweathermap.org/data/2.5/"
 var apiKey = "ba7557fe357f3ca6d72951aa5899a445";
 var currentWeatherUrl;
 var UVindexUrl;
 var forecastUrl;
-// data stores the ajaxCall response
+// var data stores the ajaxCall response
 var data;
-
 // populate with current location
 function ajaxCall(x) {
   $.ajax({
@@ -47,12 +48,12 @@ function ajaxCall(x) {
 }
 
 
-// Current Weather for Current Location
+// *** CURRENT WEATHER ***
 function currentWeather() {
-  console.log(data.coord.lat);
-  console.log(data.coord.lon);
-  // lat = 
-  // long = data
+  // retrieve longitude and latitude for cities
+  lat = data.coord.lat
+  long = data.coord.lon
+  // overwrite current conditions
   document.querySelector("#city").textContent = `${data.name} (${moment().format("MMM Do, YYYY")})`;
   document.querySelector("#temp").textContent = `Temperature: ${data.main.temp.toFixed(1)} ºF`;
   document.querySelector("#humidity").textContent = `Humidity: ${data.main.humidity}%`;
@@ -63,21 +64,22 @@ function currentWeather() {
   // call UVindex ajax
   UVindexUrl = `${baseUrl}uvi?appid=${apiKey}&lat=${lat}&lon=${long}`;
   ajaxCall(UVindexUrl);
-
 }
 
 
-// UV-Index for Current Location
+// *** UV-INDEX ***
 function UVindex() {
+  // clear previous uv-index button
+  clearUV();
   var button = document.createElement("button");
   // set colors of button depending on UV-index
   if (data.value < 3) {
     button.className = "btn btn-success btn-lg";
   }
-  else if (data.value >= 3 || data.value < 6) {
+  else if (data.value >= 3 && data.value < 6) {
     button.className = "btn btn-warning btn-lg";
   }
-  else if (data.value >= 6 || data.value < 8) {
+  else if (data.value >= 6 && data.value < 8) {
     button.className = "btn btn-orange btn-lg";
   }
   else if (data.value >= 8) {
@@ -92,9 +94,11 @@ function UVindex() {
 }
 
 
-// Forecast for Current Location
+// *** FORECAST ***
 function forecast() {
-  // loop to dynamically generate each forecast card
+  // clear previous forecast cards in deck
+  clearChildren();
+  // loop to dynamically generate each forecast card within deck
   for (var i = 4; i < data.list.length; i += 8) {
     var div1 = document.createElement("div");
     div1.className = "card bg-light";
@@ -123,9 +127,15 @@ function forecast() {
   document.querySelector("#loading-column").setAttribute("style", "display: none");
   // show weather information
   document.querySelector("#current-weather-column").classList.remove("d-none");
+  // clear children of search button and generate search icon
+  clearSearchButton();
+  var searchIcon = document.createElement("i");
+  searchIcon.className = "fas fa-search";
+  searchBtn.appendChild(searchIcon);
 }
 
-// icons for openweathermap
+
+// icons equivalent to openweathermap icon codes
 var weatherIcon = {
   "01d": "fas fa-sun",
   "01n": "fas fa-sun",
@@ -147,20 +157,20 @@ var weatherIcon = {
   "50n": "fas fa-smog",
 }
 
-// images for openweathermap
+// images equivalent to openweathermap icon codes
 var weatherImg = {
   "01d": "sunny",
-  "01n": "sunny",
+  "01n": "night-clear",
   "02d": "clouds",
-  "02n": "clouds",
+  "02n": "night-clouds",
   "03d": "cloudy",
   "03n": "cloudy",
   "04d": "cloudy",
   "04n": "cloudy",
   "09d": "drizzle",
-  "09n": "drizzle",
+  "09n": "night-rain",
   "10d": "rain",
-  "10n": "rain",
+  "10n": "night-rain",
   "11d": "thunder",
   "11n": "thunder",
   "13d": "snow",
@@ -170,20 +180,98 @@ var weatherImg = {
 }
 
 
+// *** SEARCH WEATHER BY CITY ***
 var searchBtn = document.querySelector("#search-button");
 var citySearch = document.querySelector("#search-bar");
-
+var city = "";
+// on-click direct to ajax call
 searchBtn.addEventListener("click", function () {
   event.preventDefault();
-  city = citySearch.value;
+  // convert search value to all caps
+  city = citySearch.value.toUpperCase();
   console.log(city);
+  // clear search icon and create a spinner
+  clearSearchButton()
+  var spinnerSp1 = document.createElement("span");
+  spinnerSp1.setAttribute("class", "spinner-border spinner-border-sm");
+  spinnerSp1.setAttribute("id", "search-spinner");
+  spinnerSp1.setAttribute("role", "status");
+  spinnerSp1.setAttribute("aria-hidden", "true");
+  searchBtn.appendChild(spinnerSp1);
+  var spinnerSp2 = document.createElement("span");
+  spinnerSp2.setAttribute("class", "sr-only");
+  spinnerSp2.textContent = "Loading...";
+  searchBtn.appendChild(spinnerSp2);
   currentCityWeatherUrl = `${baseUrl}weather?q=${city}&units=imperial&appid=${apiKey}`;
   ajaxCall(currentCityWeatherUrl);
-
+  saveCities();
 })
 
-// clear children previously created before creating new ones!
+
+// clear children of UV-index
+function clearUV() {
+  var uv = document.querySelector("#uv-index")
+  while (uv.hasChildNodes()) {
+    uv.removeChild(uv.firstChild);
+  }
+}
+// clear children of card deck
+function clearChildren() {
+  var deck = document.querySelector(".card-deck");
+  while (deck.hasChildNodes()) {
+    deck.removeChild(deck.firstChild);
+  }
+}
+// clear children of previous search
+function clearSearch() {
+  var search = document.querySelector("#previous-search");
+  while (search.hasChildNodes()) {
+    search.removeChild(search.firstChild);
+  }
+}
+// clear children of search button
+function clearSearchButton() {
+  while (searchBtn.hasChildNodes()) {
+    searchBtn.removeChild(searchBtn.firstChild);
+  }
+}
 
 
-// Previous Search Cities Buttons
-// <button type="submit" class="btn bg-white border btn-block w-100 text-left">Atlanta</i></button>
+// *** SAVE SEARCHES TO LOCAL STORAGE & GENERATE BUTTONS ***
+var storedCities;
+var saveCity;
+
+function saveCities() {
+  saveCity = [{ cityName: city }];
+  storedCities = JSON.parse(localStorage.getItem("cities"));
+  // if no values stored, create the object
+  if (storedCities == null) {
+    localStorage.setItem("cities", JSON.stringify(saveCity));
+    // create the button for the first city
+    let city1 = document.createElement("button");
+    city1.setAttribute("class", "btn bg-white border btn-block w-100 text-left");
+    city1.setAttribute("type", "submit");
+    city1.textContent = saveCity[0].cityName;
+    document.querySelector("#previous-search").appendChild(city1);
+  }
+  else {
+    storedCities.push({ cityName: city });
+    console.log(storedCities.length);
+    localStorage.setItem("cities", JSON.stringify(storedCities));
+    // clear buttons for all cities 
+    clearSearch();
+    // create buttons for all cities
+    for (i = 0; i < storedCities.length; i++) {
+      let newCity = document.createElement("button");
+      newCity.setAttribute("class", "btn bg-white border btn-block w-100 text-left");
+      newCity.setAttribute("type", "submit");
+      newCity.textContent = storedCities[i].cityName;
+      document.querySelector("#previous-search").appendChild(newCity);
+    }
+  }
+}
+
+
+// loading spinner for search button
+
+// on-click event for the cities from the list

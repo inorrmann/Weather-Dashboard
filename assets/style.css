@@ -5,6 +5,10 @@
     border-radius: 0;
 }
 
+#main-title {
+    text-shadow: 1px 1px 5px lightgrey;
+}
+
 .container {
     margin: 0;
 }
